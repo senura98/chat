@@ -98,9 +98,15 @@ export const updateProfile=async (req,res)=>{
         if(!profilePic){
             return res.status(400).json({message:"Profile pic is required"})
         }
+        const base64Size = (profilePic.length * 3) / 4 - 2; // Approximate file size in bytes
+        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+        if (base64Size > MAX_FILE_SIZE) {
+            return res.status(400).json({ message: "File size exceeds 5MB! Please upload a smaller file." });
+        }
 
         const uploadResponse=await cloudinary.uploader.upload(profilePic)
-        const updatedUser=await User.findByIdAndUpdate(userId,{profilePic:uploadResponse.secure_url},{new:True})
+        const updatedUser=await User.findByIdAndUpdate(userId,{profilePic:uploadResponse.secure_url},{new:true})
         res.status(200).json(updatedUser)
     }catch (error){
         console.log('error in update profile controller',error.message)
