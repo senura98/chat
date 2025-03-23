@@ -17,8 +17,6 @@ const io = new Server(server,{
 const userSocketMap={}
 
 export function getReceiverSocketId(userId){
-    console.log('all',userSocketMap)
-    console.log(userId)
     return userSocketMap[userId]
 }
 

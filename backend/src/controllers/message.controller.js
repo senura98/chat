@@ -59,7 +59,6 @@ export const sendMessage=async(req,res)=>{
         await newMessage.save();
 
         const recieverSocketId=getReceiverSocketId(recieverId)
-        console.log('harida',recieverSocketId)
         if(recieverSocketId){
             io.to(recieverSocketId).emit("newMessage",newMessage)
         }
